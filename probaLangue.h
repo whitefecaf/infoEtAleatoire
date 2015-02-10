@@ -29,7 +29,7 @@ struct ElementLangue
     char lettre;
     int nbOccur;
     float proba;
-    ElementLangueBis *lettresuivante;
+    ElementLangueBis *lettreSuivante;
     ElementLangue *suivant
 };
 

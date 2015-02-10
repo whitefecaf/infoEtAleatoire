@@ -108,10 +108,15 @@ int initLangueProb( LangueProb *lp, Langue l)
 {
 	FILE *f;
 	int i;
+	
+	
+	///////////////////////////////////////definition de lp////////////////////////////////////////////////
+	
+	
 	ElementLangue *elem1;
 	ElementLangueBis * elem2;
 	ElementLangue *elem;
-	ElementLangueBis *Elembis;
+	ElementLangueBis *elembis;
 	lp->langue = l;
 	lp->nblettreTotal = 0;
 	elem1 = malloc(sizeof(ElementLangue));
@@ -157,45 +162,80 @@ int initLangueProb( LangueProb *lp, Langue l)
 			elembis->nbOccur = 0;
 			elembis = elem2;
 		}
-		
-
+		elembis->suivant = NULL;
     }
+    elem->suivant = NULL;
+    
+    
+    
+    ////////////////////////////////////////////debut remplissage de lp si des fichiers sont sauvegarder ////////////////////////////////////////////////////////:
+    
+    
+    elem = lp->l;
+    
 	if (lp->langue == francais && access("saveProbaFR",F_OK) == 0)
 	{
 		f= fopen("saveProbaFR","r");
 		for (i=0; i<26; i++)
 		{
-			fprintf(f,"%c : %d ",l1->lettre, l1->nbOccur);
-			l = l1->lettreSuivante;
+			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
+			elembis = elem->lettreSuivante;
 			for (i=0; i<26; i++)
 			{
-				fprintf(f,"%c : %d ",l->lettre, l->nbOccur);
+				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
 			}
-			l1 = l1.suivant;
-			fprintf(f,"\n",l->lettre, l->nbOccur);
+			elem = elem->suivant;
+			fscanf(f,"\n");
 		}
-	fclose(f);
+		fclose(f);
 	}
 	else if (lp->langue == anglais && access("saveProbaEN",F_OK) == 0)
 	{
 		f= fopen("saveProbaEN","r");
-		for(i = 0;i<26; i++)
-            //TODO
-            ;
+		for (i=0; i<26; i++)
+		{
+			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
+			elembis = elem->lettreSuivante;
+			for (i=0; i<26; i++)
+			{
+				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+			}
+			elem = elem->suivant;
+			fscanf(f,"\n");
+		}
+		fclose(f);
 	}
 	else if (lp->langue == italien && access("saveProbaIT",F_OK) == 0)
 	{
 		f= fopen("saveProbaIT","r");
-		for(i = 0;i<26; i++)
-			//TODO
-            ;
+		for (i=0; i<26; i++)
+		{
+			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
+			elembis = elem->lettreSuivante;
+			for (i=0; i<26; i++)
+			{
+				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+			}
+			elem = elem->suivant;
+			fscanf(f,"\n");
+		}
+		fclose(f);
 	}
 	else if (lp->langue == allemand && access("saveProbaDE",F_OK) == 0)
 	{
 		f= fopen("saveProbaDE","r");
-		for(i = 0;i<26; i++)
-			//TODO
-			;
+		for (i=0; i<26; i++)
+		{
+			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
+			elembis = elem->lettreSuivante;
+			for (i=0; i<26; i++)
+			{
+				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+			}
+			elem = elem->suivant;
+			fscanf(f,"\n");
+		}
+ 		fclose(f);
 	}
 	return 0;
 }
@@ -216,7 +256,7 @@ void saveProba(LangueProb lp)
 	}while(f==NULL);
 
 	fprintf(f,"%d\n",lp.nblettreTotal);
-	ElementLangue *l1 = lp->l;
+	ElementLangue *l1 = lp.l;
 	ElementLangueBis *l;
 	for (i=0; i<26; i++)
 	{
@@ -226,8 +266,8 @@ void saveProba(LangueProb lp)
 		{
 			fprintf(f,"%c : %d ",l->lettre, l->nbOccur);
 		}
-		l1 = l1.suivant;
-		fprintf(f,"\n",l->lettre, l->nbOccur);
+		l1 = l1->suivant;
+		fprintf(f,"\n");
 	}
 	fclose(f);
 }

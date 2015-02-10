@@ -30,14 +30,14 @@ struct ElementLangue
     int nbOccur;
     float proba;
     ElementLangueBis *lettreSuivante;
-    ElementLangue *suivant
+    ElementLangue *suivant;
 };
 
 
 struct langueProb{
 Langue langue;
 int nblettreTotal;
-ElementLangue l;
+ElementLangue *l;
 };
 
 typedef struct langueProb LangueProb;

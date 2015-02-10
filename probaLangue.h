@@ -28,7 +28,6 @@ struct ElementLangue
 {
     char lettre;
     int nbOccur;
-    float proba;
     ElementLangueBis *lettreSuivante;
     ElementLangue *suivant;
 };
@@ -49,7 +48,7 @@ void creationBaseProba(LangueProb *lp, char *namefile, int condition);
 
 void saveProba(LangueProb lp);
 
-void calculProba(LangueProb *lp, float *proba);
+void calculProba(LangueProb *lp);
 
 
 Langue searchLangue(char *mot,float **probaLangue);

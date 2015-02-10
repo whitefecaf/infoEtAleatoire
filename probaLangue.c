@@ -10,41 +10,55 @@ void increment(LangueProb *lp, char lettre)
 {
 	lp->nblettreTotal = (lp->nblettreTotal) + 1;
 	ElementLangue *elem = lp->l;
-	while(elem->lettre != lettre)
+	while((elem->lettre) != lettre)
+	{
 		elem = elem->suivant;
+	}
 	elem->nbOccur = (elem->nbOccur) + 1;
 }
 
 void incrementation(LangueProb *lp, char lettre, char lettrePrec)
 {
+	
+	increment(lp, lettre);
 	lp->nblettreTotal = (lp->nblettreTotal) + 1;
 	ElementLangue *elem = lp->l;
-	while(elem->lettre != lettre)
+	while(elem->lettre != lettrePrec)
 		elem = elem->suivant;
 	elem->nbOccur = (elem->nbOccur) + 1;
 	ElementLangueBis *l = elem->lettreSuivante;
-	while(l->lettre != lettrePrec)
+	while(l->lettre != lettre)
+	{
 		l = l->suivant;
+	}
 	l->nbOccur = (l->nbOccur) + 1;
 }
 
-void calculProba(LangueProb *lp, float *proba)
+void calculProba(LangueProb *lp)
 {
-	int i;
-	for(i=0; i<26; i++)
+	ElementLangue *l = lp->l;
+	ElementLangueBis *li;
+	while(l->suivant != NULL)
 	{
-		proba[i] = (float)(lp->nbLettre[i]+1)/((float)(lp->nbLettreTotal +26));
+		li = l->lettreSuivante;
+		while(li->suivant != NULL)
+		{
+			li->proba = (float)((l->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
+			li = li->suivant;
+		}
+		l = l->suivant;
 	}
 }
 
 void calculProbaInternal(char *tabLetter, int nbLetter, float *proba)
 {
-    int i;
+    int i;/*
 	for(i=0; i<26; i++)
 	{
 		proba[i] = (float)(tabLetter[i]+1)/((float)(nbLetter +26));
-	}
+	}*/
 }
+
 Langue comparProba(float *prob,float **probaLangue)
 {
     int i, j;
@@ -70,7 +84,7 @@ Langue comparProba(float *prob,float **probaLangue)
 void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 {
 	if (condition == 1)
-	{
+	{	
 		FILE *f  = fopen(namefile,"r");
 		int lettrePrec = ' ';
 		if(f == NULL)
@@ -84,10 +98,10 @@ void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 				switch(lettre)
 				{
 					case' ' :
-						;
+						lettrePrec = ' ';
 					break;
 					default :
-						if(lettrePrec != ' ')
+						if(lettrePrec == ' ')
 						{
 							increment(lp, lettre); 
 						}else
@@ -104,10 +118,10 @@ void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 		}
 	}
 }
-int initLangueProb( LangueProb *lp, Langue l)
+int initLangueProb( LangueProb *lp, Langue langue)
 {
 	FILE *f;
-	int i;
+	int i,j;
 	
 	
 	///////////////////////////////////////definition de lp////////////////////////////////////////////////
@@ -117,7 +131,7 @@ int initLangueProb( LangueProb *lp, Langue l)
 	ElementLangueBis * elem2;
 	ElementLangue *elem;
 	ElementLangueBis *elembis;
-	lp->langue = l;
+	lp->langue = langue;
 	lp->nblettreTotal = 0;
 	elem1 = malloc(sizeof(ElementLangue));
 	elem2 = malloc(sizeof(ElementLangueBis));
@@ -125,27 +139,33 @@ int initLangueProb( LangueProb *lp, Langue l)
 	elembis = malloc(sizeof(ElementLangueBis));
 	
 	
+	
 	//1er élément
 	elem->lettre = 'a';
 	elem->nbOccur = 0;
 	lp->l = elem;
+	
+	
+	
+	
 	//1er élément de lettre suivante pour l'instance du premier élément
 	elembis->lettre = 'a';
 	elembis->nbOccur = 0;
 	lp->l->lettreSuivante = elembis;
-	for(i=1; i < 'z' - 97; i++)
+	for(i='b'; i <= 'z'; i++)
 	{
 		elem2 = malloc(sizeof(ElementLangue));
-		elem2->lettre = 'a' + i;
+		elem2->lettre = i;
 		elembis->suivant = elem2;
 		elembis->nbOccur = 0;
 		elembis = elem2;
 	}
+	elembis->suivant = NULL;
 	//création du dictionnaire (1er élément deja créer)
-	for(i=1; i < 'z' - 97; i++)
+	for(i='b'; i <= 'z'; i++)
     {
 		elem1 = malloc(sizeof(ElementLangue));
-        elem1->lettre = 'a' + i;
+        elem1->lettre = i;
         elem1->nbOccur = 0;
 		elem->suivant = elem1;
         elem = elem1;
@@ -154,10 +174,10 @@ int initLangueProb( LangueProb *lp, Langue l)
 		elembis->lettre = 'a';
 		elembis->nbOccur = 0;
 		elem->lettreSuivante = elembis;
-		for(i=1; i < 'z' - 97; i++)
+		for(j='b'; j <= 'z'; j++)
 		{
 			elem2 = malloc(sizeof(ElementLangue));
-			elem2->lettre = 'a' + i;
+			elem2->lettre = j;
 			elembis->suivant = elem2;
 			elembis->nbOccur = 0;
 			elembis = elem2;
@@ -166,78 +186,92 @@ int initLangueProb( LangueProb *lp, Langue l)
     }
     elem->suivant = NULL;
     
-    
-    
     ////////////////////////////////////////////debut remplissage de lp si des fichiers sont sauvegarder ////////////////////////////////////////////////////////:
-    
-    
-    elem = lp->l;
-    
-	if (lp->langue == francais && access("saveProbaFR",F_OK) == 0)
+	
+	ElementLangue *li = lp->l;
+	ElementLangueBis *l;
+	
+	if (lp->langue == francais && access("saveProbaFR.txt",F_OK) == 0)
 	{
-		f= fopen("saveProbaFR","r");
-		for (i=0; i<26; i++)
+		f = fopen("saveProbaFR.txt","r");
+		fscanf(f,"%d\n",&lp->nblettreTotal);
+		while(li != NULL)
 		{
-			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
-			elembis = elem->lettreSuivante;
-			for (i=0; i<26; i++)
+			fscanf(f,"%c : %d ",&(li->lettre), &(li->nbOccur));
+			l = li->lettreSuivante;
+			while(l != NULL)
 			{
-				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+				fscanf(f,"%c : %d ",&(l->lettre), &(l->nbOccur));
+				l = l->suivant;
 			}
-			elem = elem->suivant;
-			fscanf(f,"\n");
+			li = li->suivant;
+			fprintf(f,"\n");
 		}
 		fclose(f);
+		return 0;
 	}
-	else if (lp->langue == anglais && access("saveProbaEN",F_OK) == 0)
+	else if (lp->langue == anglais && access("saveProbaEN.txt",F_OK) == 0)
 	{
-		f= fopen("saveProbaEN","r");
-		for (i=0; i<26; i++)
+		f = fopen("saveProbaEN.txt","r");
+		fscanf(f,"%d\n",&lp->nblettreTotal);
+		
+		while(li != NULL)
 		{
-			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
-			elembis = elem->lettreSuivante;
-			for (i=0; i<26; i++)
+			fscanf(f,"%c : %d ",&(li->lettre), &(li->nbOccur));
+			l = li->lettreSuivante;
+			while(l != NULL)
 			{
-				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+				fscanf(f,"%c : %d ",&(l->lettre), &(l->nbOccur));
+				l = l->suivant;
 			}
-			elem = elem->suivant;
-			fscanf(f,"\n");
+			li = li->suivant;
+			fprintf(f,"\n");
 		}
 		fclose(f);
+		return 0;
 	}
-	else if (lp->langue == italien && access("saveProbaIT",F_OK) == 0)
+	else if (lp->langue == italien && access("saveProbaIT.txt",F_OK) == 0)
 	{
-		f= fopen("saveProbaIT","r");
-		for (i=0; i<26; i++)
+		f = fopen("saveProbaIT.txt","r");
+		fscanf(f,"%d\n",&lp->nblettreTotal);
+		while(li != NULL)
 		{
-			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
-			elembis = elem->lettreSuivante;
-			for (i=0; i<26; i++)
+			fscanf(f,"%c : %d ",&(li->lettre), &(li->nbOccur));
+			l = li->lettreSuivante;
+			while(l != NULL)
 			{
-				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+				fscanf(f,"%c : %d ",&(l->lettre), &(l->nbOccur));
+				l = l->suivant;
 			}
-			elem = elem->suivant;
-			fscanf(f,"\n");
+			li = li->suivant;
+			fprintf(f,"\n");
 		}
 		fclose(f);
+		return 0;
 	}
-	else if (lp->langue == allemand && access("saveProbaDE",F_OK) == 0)
+	else if (lp->langue == allemand && access("saveProbaDE.txt",F_OK) == 0)
 	{
-		f= fopen("saveProbaDE","r");
-		for (i=0; i<26; i++)
+		f = fopen("saveProbaDE.txt","r");
+		fscanf(f,"%d\n",&lp->nblettreTotal);
+		while(li != NULL)
 		{
-			fscanf(f,"%c : %d ",&(elem->lettre), &(elem->nbOccur));
-			elembis = elem->lettreSuivante;
-			for (i=0; i<26; i++)
+			fscanf(f,"%c : %d ",&(li->lettre), &(li->nbOccur));
+			l = li->lettreSuivante;
+			while(l != NULL)
 			{
-				fscanf(f,"%c : %d ",&(elembis->lettre), &(elembis->nbOccur));
+				fscanf(f,"%c : %d ",&(l->lettre), &(l->nbOccur));
+				l = l->suivant;
 			}
-			elem = elem->suivant;
-			fscanf(f,"\n");
+			li = li->suivant;
+			fprintf(f,"\n");
 		}
- 		fclose(f);
+		fclose(f);
+		return 0;
+	}else
+	{
+		printf("else");
+		return 1;
 	}
-	return 0;
 }
 void saveProba(LangueProb lp)
 {
@@ -258,13 +292,14 @@ void saveProba(LangueProb lp)
 	fprintf(f,"%d\n",lp.nblettreTotal);
 	ElementLangue *l1 = lp.l;
 	ElementLangueBis *l;
-	for (i=0; i<26; i++)
+	while(l1 != NULL)
 	{
 		fprintf(f,"%c : %d ",l1->lettre, l1->nbOccur);
 		l = l1->lettreSuivante;
-		for (i=0; i<26; i++)
+		while(l != NULL)
 		{
 			fprintf(f,"%c : %d ",l->lettre, l->nbOccur);
+			l = l->suivant;
 		}
 		l1 = l1->suivant;
 		fprintf(f,"\n");
@@ -276,7 +311,7 @@ Langue searchLangue(char *mot,float **probaLangue)
     char lettre[26] = {0};
     float prob[26];
     int i = 0;
-    while(mot[i] != NULL)
+    while(&mot[i] != NULL)
     {
         lettre[mot[i]]++;
         i++;

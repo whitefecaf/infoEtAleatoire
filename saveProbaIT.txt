@@ -1,0 +1,27 @@
+7033
+a : 858 a : 0 b : 3 c : 14 d : 14 e : 0 f : 3 g : 2 h : 0 i : 6 j : 0 k : 0 l : 38 m : 10 n : 57 o : 0 p : 8 q : 0 r : 59 s : 30 t : 23 u : 1 v : 38 w : 0 x : 0 y : 0 z : 3 
+b : 86 a : 8 b : 5 c : 0 d : 0 e : 12 f : 0 g : 0 h : 0 i : 9 j : 0 k : 0 l : 0 m : 0 n : 0 o : 4 p : 0 q : 0 r : 3 s : 0 t : 0 u : 2 v : 0 w : 0 x : 0 y : 0 z : 0 
+c : 411 a : 34 b : 0 c : 29 d : 0 e : 13 f : 0 g : 0 h : 46 i : 22 j : 0 k : 0 l : 1 m : 0 n : 0 o : 53 p : 0 q : 0 r : 2 s : 0 t : 0 u : 5 v : 0 w : 0 x : 0 y : 0 z : 0 
+d : 341 a : 35 b : 0 c : 0 d : 11 e : 30 f : 0 g : 0 h : 0 i : 46 j : 0 k : 0 l : 0 m : 0 n : 0 o : 37 p : 0 q : 0 r : 4 s : 0 t : 0 u : 6 v : 0 w : 0 x : 0 y : 0 z : 0 
+e : 640 a : 0 b : 4 c : 5 d : 5 e : 1 f : 1 g : 5 h : 0 i : 3 j : 0 k : 0 l : 45 m : 7 n : 34 o : 0 p : 1 q : 0 r : 59 s : 18 t : 18 u : 0 v : 18 w : 0 x : 0 y : 0 z : 4 
+f : 82 a : 14 b : 0 c : 0 d : 0 e : 2 f : 4 g : 0 h : 0 i : 11 j : 0 k : 0 l : 0 m : 0 n : 0 o : 1 p : 0 q : 0 r : 3 s : 0 t : 0 u : 6 v : 0 w : 0 x : 0 y : 0 z : 0 
+g : 122 a : 5 b : 0 c : 0 d : 0 e : 2 f : 0 g : 2 h : 1 i : 7 j : 0 k : 0 l : 25 m : 0 n : 11 o : 0 p : 0 q : 0 r : 4 s : 0 t : 0 u : 4 v : 0 w : 0 x : 0 y : 0 z : 0 
+h : 103 a : 2 b : 0 c : 0 d : 0 e : 24 f : 0 g : 0 h : 0 i : 17 j : 0 k : 0 l : 0 m : 0 n : 0 o : 4 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+i : 648 a : 42 b : 3 c : 15 d : 12 e : 16 f : 2 g : 11 h : 0 i : 0 j : 0 k : 0 l : 27 m : 4 n : 40 o : 28 p : 1 q : 0 r : 8 s : 18 t : 15 u : 2 v : 9 w : 0 x : 0 y : 0 z : 2 
+j : 0 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+k : 0 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+l : 521 a : 76 b : 0 c : 3 d : 2 e : 32 f : 2 g : 0 h : 0 i : 34 j : 0 k : 0 l : 51 m : 0 n : 0 o : 23 p : 0 q : 0 r : 0 s : 0 t : 6 u : 6 v : 0 w : 0 x : 0 y : 0 z : 0 
+m : 209 a : 31 b : 1 c : 0 d : 2 e : 23 f : 0 g : 0 h : 0 i : 13 j : 0 k : 0 l : 0 m : 2 n : 0 o : 15 p : 13 q : 0 r : 0 s : 0 t : 0 u : 4 v : 0 w : 0 x : 0 y : 0 z : 0 
+n : 450 a : 35 b : 0 c : 5 d : 26 e : 26 f : 0 g : 1 h : 0 i : 12 j : 0 k : 0 l : 0 m : 0 n : 3 o : 47 p : 0 q : 0 r : 0 s : 5 t : 25 u : 6 v : 3 w : 0 x : 0 y : 0 z : 8 
+o : 537 a : 0 b : 2 c : 13 d : 1 e : 0 f : 0 g : 10 h : 1 i : 9 j : 0 k : 0 l : 30 m : 23 n : 36 o : 0 p : 5 q : 0 r : 35 s : 16 t : 9 u : 0 v : 3 w : 0 x : 0 y : 0 z : 0 
+p : 209 a : 21 b : 0 c : 0 d : 0 e : 33 f : 0 g : 0 h : 0 i : 11 j : 0 k : 0 l : 0 m : 0 n : 0 o : 17 p : 6 q : 0 r : 12 s : 0 t : 0 u : 4 v : 0 w : 0 x : 0 y : 0 z : 0 
+q : 46 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 23 v : 0 w : 0 x : 0 y : 0 z : 0 
+r : 469 a : 46 b : 2 c : 7 d : 4 e : 51 f : 0 g : 4 h : 0 i : 52 j : 0 k : 0 l : 3 m : 6 n : 4 o : 15 p : 1 q : 0 r : 10 s : 5 t : 6 u : 0 v : 7 w : 0 x : 0 y : 0 z : 0 
+s : 418 a : 30 b : 0 c : 16 d : 0 e : 46 f : 0 g : 3 h : 2 i : 32 j : 0 k : 0 l : 0 m : 0 n : 0 o : 13 p : 7 q : 0 r : 0 s : 19 t : 25 u : 15 v : 0 w : 0 x : 0 y : 0 z : 0 
+t : 363 a : 35 b : 0 c : 0 d : 0 e : 21 f : 0 g : 0 h : 0 i : 24 j : 0 k : 0 l : 0 m : 0 n : 0 o : 45 p : 0 q : 0 r : 15 s : 0 t : 26 u : 13 v : 0 w : 0 x : 0 y : 0 z : 0 
+u : 238 a : 16 b : 0 c : 2 d : 2 e : 12 f : 1 g : 3 h : 0 i : 3 j : 0 k : 0 l : 11 m : 1 n : 22 o : 12 p : 1 q : 0 r : 13 s : 3 t : 12 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+v : 242 a : 43 b : 0 c : 0 d : 0 e : 31 f : 0 g : 0 h : 0 i : 22 j : 0 k : 0 l : 0 m : 0 n : 0 o : 20 p : 0 q : 0 r : 1 s : 0 t : 0 u : 3 v : 1 w : 0 x : 0 y : 0 z : 0 
+w : 0 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+x : 0 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+y : 0 a : 0 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 0 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 0 
+z : 40 a : 7 b : 0 c : 0 d : 0 e : 0 f : 0 g : 0 h : 0 i : 10 j : 0 k : 0 l : 0 m : 0 n : 0 o : 0 p : 0 q : 0 r : 0 s : 0 t : 0 u : 0 v : 0 w : 0 x : 0 y : 0 z : 3 

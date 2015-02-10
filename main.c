@@ -32,29 +32,18 @@ int main (int argc, char *argv[])
 	calculProba(&allLangue[3]);
 
 	char *mot = "pomme";
+	int longueurmot = 5;
+    Langue l = searchLangue (mot,allLangue, longueurmot);
+	
 
-    //Langue l = searchLangue (mot, probaLangue);
-
-
-	ElementLangue *l = allLangue[0].l;
-	ElementLangueBis *li;
-	printf("%d\n",(allLangue[0].nblettreTotal));
-	while(l	 != NULL)
-	{
-		li = l->lettreSuivante;
-		printf("\n %c : %d  ", l->lettre, l->nbOccur);
-		while(li != NULL)
-		{
-			printf("%c : %d  ", li->lettre, li->nbOccur);
-			li = li->suivant;
-		}
-		l = l->suivant;
-	}
-
-
-
-
-
+	if(l == francais)
+		printf("%s -> français", mot);
+	else if(l == anglais)
+		printf("%s -> anglais", mot);
+	else if (l == italien)
+		printf("%s -> italien", mot);
+	else 
+		printf("%s -> allemand", mot);
 
 
 	saveProba(allLangue[0]);

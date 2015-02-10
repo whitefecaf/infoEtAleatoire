@@ -51,7 +51,7 @@ void saveProba(LangueProb lp);
 void calculProba(LangueProb *lp);
 
 
-Langue searchLangue(char *mot,float **probaLangue);
+Langue searchLangue(char *mot,LangueProb *lp, int n);
 
 
 #endif

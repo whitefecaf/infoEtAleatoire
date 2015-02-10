@@ -6,6 +6,152 @@
  */
 #include "probaLangue.h"
 
+typedef struct ElementProbaBis ElementProbaBis;
+struct ElementProbaBis
+{
+    char lettre;
+    float proba;
+    ElementProbaBis *suivant;
+};
+
+typedef struct ElementProba ElementProba;
+struct ElementProba
+{
+    char lettre;
+    ElementProbaBis *diffprobaFR;
+	ElementProbaBis *diffprobaEN;
+	ElementProbaBis *diffprobaIT;
+	ElementProbaBis *diffprobaDE;
+    ElementProba *suivant;
+};
+
+void initStructProba(ElementProba *lp)
+{
+	int i, j;
+	ElementProba *elem1;
+	ElementProbaBis * elem2;
+	ElementProba *elem;
+	ElementProbaBis *elembis;
+	elem1 = malloc(sizeof(ElementProba));
+	elem2 = malloc(sizeof(ElementProbaBis));
+	elem = malloc(sizeof(ElementProba));
+	elembis = malloc(sizeof(ElementProbaBis));
+	
+	//1er élément
+	elem->lettre = 'a';
+	lp = elem;
+	
+	
+	
+	
+	//1er élément de lettre suivante pour l'instance du premier élément
+	elembis->lettre = 'a';
+	lp->diffprobaFR = elembis;
+	for(i='b'; i <= 'z'; i++)
+	{
+		elem2 = malloc(sizeof(ElementLangue));
+		elem2->lettre = i;
+		elembis->suivant = elem2;
+		elembis = elem2;
+	}
+	elembis->suivant = NULL;
+	
+	elembis = malloc(sizeof(ElementLangueBis));
+	elembis->lettre = 'a';
+	lp->diffprobaEN = elembis;
+	for(i='b'; i <= 'z'; i++)
+	{
+		elem2 = malloc(sizeof(ElementLangue));
+		elem2->lettre = i;
+		elembis->suivant = elem2;
+		elembis = elem2;
+	}
+	elembis->suivant = NULL;
+	
+	elembis = malloc(sizeof(ElementLangueBis));
+	elembis->lettre = 'a';
+	lp->diffprobaIT = elembis;
+	for(i='b'; i <= 'z'; i++)
+	{
+		elem2 = malloc(sizeof(ElementLangue));
+		elem2->lettre = i;
+		elembis->suivant = elem2;
+		elembis = elem2;
+	}
+	elembis->suivant = NULL;
+	
+	elembis = malloc(sizeof(ElementLangueBis));
+	elembis->lettre = 'a';
+	lp->diffprobaDE = elembis;
+	for(i='b'; i <= 'z'; i++)
+	{
+		elem2 = malloc(sizeof(ElementLangue));
+		elem2->lettre = i;
+		elembis->suivant = elem2;
+		elembis = elem2;
+	}
+	elembis->suivant = NULL;
+	//création du dictionnaire (1er élément deja créer)
+	for(i='b'; i <= 'z'; i++)
+    {
+		elem1 = malloc(sizeof(ElementLangue));
+        elem1->lettre = i;
+		elem->suivant = elem1;
+        elem = elem1;
+		//1er élément de lettre suivante pour l'instance en cours
+		elembis = malloc(sizeof(ElementLangueBis));
+		elembis->lettre = 'a';
+		lp->diffprobaFR = elembis;
+		for(j='b'; j <= 'z'; j++)
+		{
+			elem2 = malloc(sizeof(ElementLangue));
+			elem2->lettre = j;
+			elembis->suivant = elem2;
+			elembis = elem2;
+		}
+		elembis->suivant = NULL;
+		
+		elembis = malloc(sizeof(ElementLangueBis));
+		elembis->lettre = 'a';
+		lp->diffprobaEN = elembis;
+		for(j='b'; j <= 'z'; j++)
+		{
+			elem2 = malloc(sizeof(ElementLangue));
+			elem2->lettre = j;
+			elembis->suivant = elem2;
+			elembis = elem2;
+		}
+		elembis->suivant = NULL;
+		
+		elembis = malloc(sizeof(ElementLangueBis));
+		elembis->lettre = 'a';
+		lp->diffprobaIT = elembis;
+		for(j='b'; j <= 'z'; j++)
+		{
+			elem2 = malloc(sizeof(ElementLangue));
+			elem2->lettre = j;
+			elembis->suivant = elem2;
+			elembis = elem2;
+		}
+		elembis->suivant = NULL;
+		
+		elembis = malloc(sizeof(ElementLangueBis));
+		elembis->lettre = 'a';
+		lp->diffprobaDE = elembis;
+		for(j='b'; j <= 'z'; j++)
+		{
+			elem2 = malloc(sizeof(ElementLangue));
+			elem2->lettre = j;
+			elembis->suivant = elem2;
+			elembis = elem2;
+		}
+		elembis->suivant = NULL;
+    }
+    elem->suivant = NULL;
+	
+	
+}
+
 void increment(LangueProb *lp, char lettre)
 {
 	lp->nblettreTotal = (lp->nblettreTotal) + 1;
@@ -50,36 +196,45 @@ void calculProba(LangueProb *lp)
 	}
 }
 
-void calculProbaInternal(char *tabLetter, int nbLetter, float *proba)
+void calculProbaInternal(ElementLangue *l)
 {
-    int i;/*
-	for(i=0; i<26; i++)
+	ElementLangueBis *li;
+	while(l->suivant != NULL)
 	{
-		proba[i] = (float)(tabLetter[i]+1)/((float)(nbLetter +26));
-	}*/
+		li = l->lettreSuivante;
+		while(li->suivant != NULL)
+		{
+			li->proba = (float)((l->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
+			li = li->suivant;
+		}
+		l = l->suivant;
+	}
 }
 
-Langue comparProba(float *prob,float **probaLangue)
+Langue comparProba(ElementLangue *l,LangueProb *lp)
 {
-    int i, j;
-    float **diffProba;
-    diffProba = malloc(4*sizeof(float*));
-    diffProba[0] = malloc (26* sizeof(float));
-    diffProba[1] = malloc (26* sizeof(float));
-    diffProba[2] = malloc (26* sizeof(float));
-    diffProba[3] = malloc (26* sizeof(float));
-    for(j = 0; j < 4; j++)
-        for(i = 0; i < 26;i++)
-            diffProba[j][i] = probaLangue[j][i] - prob[i];
-
-    for(j = 0; j < 4; j++)
-    {
-        for(i = 0; i < 26; i++)
-            printf("proba %d : %f ", j, diffProba[j][i]);
-        printf("\n");
-    }
-    return francais;
-
+	ElementProba *prob;
+	initStructProba(prob);
+	ElementLangue *l0,*l1,*l2,*l3;
+	ElementLangueBis *lb0, *lb1,lb2,lb3;
+	l0 = lp[0].l;
+	l1 = lp[1].l;
+	l2 = lp[2].l;
+	l3 = lp[3].l;
+	while(l0 != NULL)//l0,l1,l2 et l3 ont la même taille
+	{
+		lb0 = l0.lettreSuivante;
+		lb1 = l1.lettreSuivante;
+		lb2 = l2.lettreSuivante;
+		lb3 = l3.lettreSuivante;
+		while(lb0 != NULL)
+		{
+			
+			
+		}
+		l0 = l0.suivant;
+	}
+   
 }
 void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 {
@@ -306,18 +461,97 @@ void saveProba(LangueProb lp)
 	}
 	fclose(f);
 }
-Langue searchLangue(char *mot,float **probaLangue)
+Langue searchLangue(char *mot,LangueProb *lp, int n)
 {
-    char lettre[26] = {0};
-    float prob[26];
-    int i = 0;
-    while(&mot[i] != NULL)
+	int i, j;
+	ElementLangue *racine;
+    ElementLangue *elem1;
+	ElementLangueBis * elem2;
+	ElementLangue *elem;
+	ElementLangueBis *elembis;
+	elem1 = malloc(sizeof(ElementLangue));
+	elem2 = malloc(sizeof(ElementLangueBis));
+	elem = malloc(sizeof(ElementLangue));
+	elembis = malloc(sizeof(ElementLangueBis));
+	
+	
+	//1er élément
+	elem->lettre = 'a';
+	elem->nbOccur = 0;
+	racine = elem;
+	
+	
+	//1er élément de lettre suivante pour l'instance du premier élément
+	elembis->lettre = 'a';
+	elembis->nbOccur = 0;
+	racine->lettreSuivante = elembis;
+	for(i='b'; i <= 'z'; i++)
+	{
+		elem2 = malloc(sizeof(ElementLangue));
+		elem2->lettre = i;
+		elembis->suivant = elem2;
+		elembis->nbOccur = 0;
+		elembis = elem2;
+	}
+	elembis->suivant = NULL;
+	//création du dictionnaire (1er élément deja créer)
+	for(i='b'; i <= 'z'; i++)
     {
-        lettre[mot[i]]++;
-        i++;
+		elem1 = malloc(sizeof(ElementLangue));
+        elem1->lettre = i;
+        elem1->nbOccur = 0;
+		elem->suivant = elem1;
+        elem = elem1;
+		//1er élément de lettre suivante pour l'instance en cours
+		elembis = malloc(sizeof(ElementLangueBis));
+		elembis->lettre = 'a';
+		elembis->nbOccur = 0;
+		elem->lettreSuivante = elembis;
+		for(j='b'; j <= 'z'; j++)
+		{
+			elem2 = malloc(sizeof(ElementLangue));
+			elem2->lettre = j;
+			elembis->suivant = elem2;
+			elembis->nbOccur = 0;
+			elembis = elem2;
+		}
+		elembis->suivant = NULL;
     }
-    calculProbaInternal(lettre, i, prob);
+    elem->suivant = NULL;
+	
+	elem = racine;
+	i = 0; 
+	while(mot[i] < n)
+    {
+        if (i == 0)
+		{
+			while((elem->lettre) != mot[i])
+			{
+				elem = elem->suivant;
+			}
+			elem->nbOccur = (elem->nbOccur) + 1;
+		}else
+		{
+			while((elem->lettre) != mot[i])
+			{
+				elem = elem->suivant;
+			}
+			elem->nbOccur = (elem->nbOccur) + 1;
+			elem = racine;
+			while(elem->lettre != mot[i-1])
+				elem = elem->suivant;
+			elem->nbOccur = (elem->nbOccur) + 1;
+			ElementLangueBis *l = elem->lettreSuivante;
+			while(l->lettre != mot[i])
+			{
+				l = l->suivant;
+			}
+			l->nbOccur = (l->nbOccur) + 1;
+		}
+		i++;
+    };
+    calculProbaInternal(racine);
 
-    return comparProba(prob,probaLangue);
+    return comparProba(racine,lp);
 }
 

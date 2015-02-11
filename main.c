@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
 	calculProba(&allLangue[2]);
 	calculProba(&allLangue[3]);
 
-	char *mot = "parteivorsitz";
+	char *mot = "interactivity";
 	int longueurmot = strlen(mot);
 	Langue l = searchLangue (mot,allLangue, longueurmot);
 

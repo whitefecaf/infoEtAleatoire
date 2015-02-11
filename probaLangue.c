@@ -211,27 +211,41 @@ void calculProbaInternal(ElementLangue *l)
 	}
 }
 
-// renvoie la langue qui qui a la proba la plus proche de l
-Langue compareProba(ElementLangue* l,LangueProb* lp)
+Langue max(float fr, float en, float it, float de)
 {
-  float diff[4] = {0};
-  while(L != null)
+  if(fr > en)
     {
-      diff[0] = min(diff[0], compare_language_probability(l, lp[0]));
-      diff[1] = compare_language_probability(l, lp[1]);
-      diff[2] = compare_language_probability(l, lp[2]);
-      diff[3] = compare_language_probability(l, lp[3]);
+      if(fr > it)
+	{
+	if (fr > de)
+	  return francais;
+	else
+	  return allemand;
+	}
+      else if (it > de)
+	return italien;
+      else
+	return allemand;
     }
-}
-
-float get_language_probability(ElementLangue l, LangueProb lp)
-{
-
+  else
+     {
+      if(en > it)
+	{
+	if (en > de)
+	  return anglais;
+	else
+	  return allemand;
+	}
+      else if (it > de)
+	return italien;
+      else
+	return allemand;    
+    }
 }
 
 Langue comparProba(ElementLangue *l,LangueProb *lp)
 {
-	float totalFR = 0, totalEN = 0, totalIT = 0, totalDE = 0;
+  float totalFR = 1, totalEN = 1, totalIT = 1, totalDE = 1, totalMot = 1;
 	ElementProba *prob = malloc(sizeof(ElementProba));
 	prob = initStructProba(prob);
 	ElementLangue *l0,*l1,*l2,*l3;
@@ -267,29 +281,19 @@ Langue comparProba(ElementLangue *l,LangueProb *lp)
 		  lb3 = lb3->suivant;
 		}
 	      //lb0->lettre = lbMot->lettre
-	      totalFR += (lb0->proba - lbMot->proba);
-	      totalEN += (lb1->proba - lbMot->proba);
-	      totalIT += (lb2->proba - lbMot->proba);
-	      totalDE += (lb3->proba - lbMot->proba);
+	      totalFR *= lb0->proba;
+	      totalEN *= lb1->proba;
+	      totalIT *= lb2->proba;
+	      totalDE *= lb3->proba;
+	      totalMot *= lbMot->proba; 
 	    }
 	  l = l->suivant;
 	}
-
-
-	if(totalFR < totalIT && totalFR < totalEN && totalFR < totalDE)
-	{
-		return francais;
-	}else if(totalIT < totalFR && totalIT < totalEN && totalIT < totalDE)
-	{
-		return italien;
-	}else if(totalEN < totalFR && totalEN < totalIT && totalEN < totalDE)
-	{
-		return anglais ;
-	}else if(totalDE < totalFR && totalDE < totalEN && totalDE < totalIT)
-	{
-		return allemand ;
-	}
-	return francais;//ne sert a rien juste pour les warning
+	totalFR -= totalMot;
+	totalEN -= totalMot;
+	totalIT -= totalMot;
+	totalDE -= totalMot;
+	return max(totalFR,totalEN,totalIT,totalDE);//ne sert a rien juste pour les warning
 }
 void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 {
@@ -579,7 +583,7 @@ void  insereTrierLettre(ElementLangueBis **racine, char letter)
     }
 }
 
-ElementLangue* get_EL_from_word(char* word, int n)
+ElementLangue* get_EL_from_word(char*mot, int n)
 {
   
   int i = 0, j = 0;
@@ -646,6 +650,6 @@ ElementLangue* get_EL_from_word(char* word, int n)
 
 Langue searchLangue(char *mot,LangueProb *lp, int n)
 {
-  ElementLangue *racine = get_EL_from_world(mot,n); 
+  ElementLangue *racine = get_EL_from_word(mot,n); 
   return comparProba(racine,lp);
 }

@@ -17,12 +17,12 @@ int main (int argc, char *argv[])
     - 2 l'iatalien
     - 3 l'allemand
     */
-	int i;
+
 	LangueProb *allLangue;
 	allLangue = malloc(4 * sizeof(LangueProb));
-	
-	
-	creationBaseProba(&(allLangue[0]),"french.txt", initLangueProb(&allLangue[0],francais));	
+
+
+	creationBaseProba(&(allLangue[0]),"french.txt", initLangueProb(&allLangue[0],francais));
 	creationBaseProba(&allLangue[1],"english.txt", initLangueProb(&allLangue[1],anglais));
 	creationBaseProba(&allLangue[2],"italian.txt", initLangueProb(&allLangue[2],italien));
 	creationBaseProba(&allLangue[3],"dutch.txt", initLangueProb(&allLangue[3],allemand));
@@ -31,10 +31,10 @@ int main (int argc, char *argv[])
 	calculProba(&allLangue[2]);
 	calculProba(&allLangue[3]);
 
-	char *mot = "pomme";
+	char *mot = "andiamo";
 	int longueurmot = 5;
-    Langue l = searchLangue (mot,allLangue, longueurmot);
-	
+	Langue l = searchLangue (mot,allLangue, longueurmot);
+
 
 	if(l == francais)
 		printf("%s -> français", mot);
@@ -42,7 +42,7 @@ int main (int argc, char *argv[])
 		printf("%s -> anglais", mot);
 	else if (l == italien)
 		printf("%s -> italien", mot);
-	else 
+	else
 		printf("%s -> allemand", mot);
 
 
@@ -50,6 +50,6 @@ int main (int argc, char *argv[])
 	saveProba(allLangue[1]);
 	saveProba(allLangue[2]);
 	saveProba(allLangue[3]);
-	
+
 	return 0;
 }

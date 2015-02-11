@@ -502,44 +502,109 @@ void saveProba(LangueProb lp)
 	fclose(f);
 }
 
+void  insereTrier(ElementLangue **racine, char letter)
+{
+  ElementLangue *elem = *racine->suivant;
+  ElementLangue *elemPrec = *racine;
+  ElementLangue *elemInser = malloc(sizeof(ElementLangue));
+  elemInser->lettre = letter;
+  elemInser->lettreSuivante = NULL;
+  elemInser->nbOccur = 1;
+  if ((*racine)->lettre > letter)
+    {
+      elemInser->suivant = *racine;
+      *racine = elemInser;
+    }
+  else
+    {
+      while(elem != NULL && elem->lettre < letter)
+	{
+	  elem = elem->suivant;
+	  elemPrec = elemPrec->suivant;
+	}
+      elemPrec->suivant = elemInser;
+      elemInser->suivant = elem;
+    }
+}
+
+void  insereTrierLettre(ElementLangueBis **racine, char letter)
+{
+  ElementLangueBis *elem = racine->suivant;
+  ElementLangueBis *elemPrec = racine;
+  ElementLangueBis *elemInser = malloc(sizeof(ElementLangue));
+  elemInser->lettre = letter;
+  elemInser->lettreSuivante = NULL;
+  elemInser->nbOccur = 1;
+  if (racine->lettre > letter)
+    {
+      elemInser->suivant = racine;
+      racine = elemInser;
+    }
+  else
+    {
+      while(elem != NULL && elem->lettre < letter)
+	{
+	  elem = elem->suivant;
+	  elemPrec = elemPrec->suivant;
+	}
+      elemPrec->suivant = elemInser;
+      elemInser->suivant = elem;
+    }
+}
+
+
 Langue searchLangue(char *mot,LangueProb *lp, int n)
 {
 
-	int i, j;
-	ElementLangue *racine = malloc(sizeof(ElementLangue));
-	ElementLangue *elem1 =malloc(sizeof(ElementLangue));
-	ElementLangueBis * elem2;
-	ElementLangue *elem;
-	ElementLangueBis *elembis;
+  int i, j;
+  ElementLangue *racine = malloc(sizeof(ElementLangue));
+  ElementLangue *elem1 =malloc(sizeof(ElementLangue));
+  ElementLangueBis * elem2;
+  ElementLangue *elem;
+  ElementLangueBis *elembis;
+  elem = racine;
 
-
-
-	while(mot[i] < n)
+  while(i < n)
+    {
+      if (i == 0)
 	{
-		if (i == 0)
-		{
-			racine->lettre = mot[i];
-			racine->nbOccur = 1;
-		}else
-		{
-			while((elem->lettre) != mot[i])
-			{
-				elem = elem->suivant;
-			}
-			elem->nbOccur = (elem->nbOccur) + 1;
-			elem = racine;
-			while(elem->lettre != mot[i-1])
-				elem = elem->suivant;
-			elem->nbOccur = (elem->nbOccur) + 1;
-			ElementLangueBis *l = elem->lettreSuivante;
-			while(l->lettre != mot[i])
-			{
-				l = l->suivant;
-			}
-			l->nbOccur = (l->nbOccur) + 1;
-		}
-		i++;
+	  racine->lettre = mot[i];
+	  racine->nbOccur = 1;
+	  racine->suivant = NULL;
+	}else
+	{
+	  while (elem != NULL && elem->lettre < mot[i])
+	    {
+	      elem = elem->suivant;
+	    }
+	  if(elem == NULL || mot[i] > elem->lettre)
+	    {
+	      insereTrier(&racine, mot[i]);
+	    }
+	  else
+	    {
+	      elem->nbOccur += 1;
+	    }
+	  while (elem->lettre != mot[i-1])
+	    {
+	      elem = elem->suivant;
+	    }
+	  ElementLangueBis *l = elem->lettreSuivante;
+	  while(l != NULL && l->lettre < mot[i])
+	    {
+	      l = l->suivant;
+	    }
+	  if(elem == NULL || mot[i] > l->lettre)
+	    {
+	      insereTrierLettre(&l, mot[i]);
+	    }
+	  else
+	    {
+	      elem->nbOccur += 1;
+	    }
 	}
+      i++;
+    }
 
 	/*
 	int i, j;

@@ -31,19 +31,19 @@ int main (int argc, char *argv[])
 	calculProba(&allLangue[2]);
 	calculProba(&allLangue[3]);
 
-	char *mot = "andiamo";
+	char *mot = "parteivorsitz";
 	int longueurmot = strlen(mot);
 	Langue l = searchLangue (mot,allLangue, longueurmot);
 
 
 	if(l == francais)
-		printf("%s -> français", mot);
+		printf("%s -> français\n", mot);
 	else if(l == anglais)
-		printf("%s -> anglais", mot);
+		printf("%s -> anglais\n", mot);
 	else if (l == italien)
-		printf("%s -> italien", mot);
+		printf("%s -> italien\n", mot);
 	else
-		printf("%s -> allemand", mot);
+		printf("%s -> allemand\n", mot);
 
 
 	saveProba(allLangue[0]);

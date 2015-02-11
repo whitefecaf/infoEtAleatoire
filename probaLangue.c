@@ -501,8 +501,46 @@ void saveProba(LangueProb lp)
 	}
 	fclose(f);
 }
+
 Langue searchLangue(char *mot,LangueProb *lp, int n)
 {
+
+	int i, j;
+	ElementLangue *racine = malloc(sizeof(ElementLangue));
+	ElementLangue *elem1 =malloc(sizeof(ElementLangue));
+	ElementLangueBis * elem2;
+	ElementLangue *elem;
+	ElementLangueBis *elembis;
+
+
+
+	while(mot[i] < n)
+	{
+		if (i == 0)
+		{
+			racine->lettre = mot[i];
+			racine->nbOccur = 1;
+		}else
+		{
+			while((elem->lettre) != mot[i])
+			{
+				elem = elem->suivant;
+			}
+			elem->nbOccur = (elem->nbOccur) + 1;
+			elem = racine;
+			while(elem->lettre != mot[i-1])
+				elem = elem->suivant;
+			elem->nbOccur = (elem->nbOccur) + 1;
+			ElementLangueBis *l = elem->lettreSuivante;
+			while(l->lettre != mot[i])
+			{
+				l = l->suivant;
+			}
+			l->nbOccur = (l->nbOccur) + 1;
+		}
+		i++;
+	}
+
 	/*
 	int i, j;
 	ElementLangue *racine;
@@ -590,7 +628,7 @@ Langue searchLangue(char *mot,LangueProb *lp, int n)
 			l->nbOccur = (l->nbOccur) + 1;
 		}
 		i++;
-	};
+	}
 	calculProbaInternal(racine);
 	*/
 	return comparProba(racine,lp);

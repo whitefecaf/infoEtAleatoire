@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
 	calculProba(&allLangue[3]);
 
 	char *mot = "andiamo";
-	int longueurmot = 5;
+	int longueurmot = strlen(mot);
 	Langue l = searchLangue (mot,allLangue, longueurmot);
 
 

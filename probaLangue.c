@@ -5,7 +5,7 @@
  *      Author: whitefecaf
  */
 #include "probaLangue.h"
-
+#include <assert.h>
 typedef struct ElementProbaBis ElementProbaBis;
 struct ElementProbaBis
 {
@@ -182,61 +182,70 @@ void incrementation(LangueProb *lp, char lettre, char lettrePrec)
 
 void calculProba(LangueProb *lp)
 {
-	ElementLangue *l = lp->l;
-	ElementLangueBis *li;
-	while(l->suivant != NULL)
-	{
-		li = l->lettreSuivante;
-		while(li->suivant != NULL)
-		{
-			li->proba = (float)((l->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
-			li = li->suivant;
-		}
-		l = l->suivant;
-	}
-}
-
-void calculProbaInternal(ElementLangue *l)
-{
-	ElementLangueBis *li;
-	while(l != NULL)
-	{
-		li = l->lettreSuivante;
-		while(li != NULL)
-		{
-			li->proba = (float)((l->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
-			li = li->suivant;
-		}
-		l = l->suivant;
-	}
-}
-
-Langue max(float fr, float en, float it, float de)
-{
-  if(fr > en)
+  ElementLangue *l = lp->l;
+  ElementLangueBis *li;
+  while(l->suivant != NULL)
     {
-      if(fr > it)
+      l->proba = (float)(lp->nblettreTotal + 1)/(float)(l->nbOccur + 26);
+      li = l->lettreSuivante;
+      while(li->suivant != NULL)
 	{
-	if (fr > de)
+	  li->proba = (float)((l->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
+	  li = li->suivant;
+	}
+      l = l->suivant;
+    }
+}
+
+void calculProbaInternal(ElementLangue *l, int nblettre)
+{
+  ElementLangue *lbis = l;
+  ElementLangueBis *li;
+  while(lbis != NULL)
+    {
+      lbis->proba =  (float)(nblettre + 1) /(float)((lbis->nbOccur) + 26);
+      li = lbis->lettreSuivante;
+      while(li != NULL)
+	{
+	  li->proba = (float)((lbis->nbOccur)+ 1) /(float)((li->nbOccur) + 26);
+	  li = li->suivant;
+	}
+      lbis  = lbis->suivant;
+    }
+}
+
+Langue max(float fr, float en, float it, float de, float mot)
+{
+
+  fr = fr - mot;
+  en -= mot;
+  it -= mot;
+  de -= mot;
+ 
+  if(fr < en)
+    {
+      if(fr < it)
+	{
+	if (fr < de)
 	  return francais;
 	else
 	  return allemand;
 	}
-      else if (it > de)
+      else if (it < de)
 	return italien;
       else
 	return allemand;
     }
   else
      {
-      if(en > it)
+      if(en < it)
 	{
-	if (en > de)
+	if (en < de)
 	  return anglais;
 	else
 	  return allemand;
 	}
-      else if (it > de)
+      else if (it < de)
 	return italien;
       else
 	return allemand;    
@@ -246,54 +255,55 @@ Langue max(float fr, float en, float it, float de)
 Langue comparProba(ElementLangue *l,LangueProb *lp)
 {
   float totalFR = 1, totalEN = 1, totalIT = 1, totalDE = 1, totalMot = 1;
-	ElementProba *prob = malloc(sizeof(ElementProba));
-	prob = initStructProba(prob);
-	ElementLangue *l0,*l1,*l2,*l3;
-	ElementLangueBis *lb0, *lb1,*lb2,*lb3,*lbMot;
-	l0 = lp[0].l;
-	l1 = lp[1].l;
-	l2 = lp[2].l;
-	l3 = lp[3].l;
-
-	while(l != NULL)//l0,l1,l2 et l3 ont la même taille
+  ElementProba *prob = malloc(sizeof(ElementProba));
+  prob = initStructProba(prob);
+  ElementLangue *l0,*l1,*l2,*l3;
+  ElementLangueBis *lb0, *lb1,*lb2,*lb3,*lbMot;
+  l0 = lp[0].l;
+  l1 = lp[1].l;
+  l2 = lp[2].l;
+  l3 = lp[3].l;
+  assert(l!= NULL);
+  while(l != NULL)//l0,l1,l2 et l3 ont la même taille
+    {
+      while (l0->lettre != l->lettre)
 	{
-	  while (l0->lettre != l->lettre)
-	    {
-	      l0 = l0->suivant;
-	      l1 = l1->suivant;
-	      l2 = l2->suivant;
-	      l3 = l3->suivant;
-	    }
-	  //l0->lettre = l->lettre
-	  lbMot = l->lettreSuivante;
-	  while (lbMot != NULL)
-	    {
-
-	      lb0 = l0->lettreSuivante;
-	      lb1 = l1->lettreSuivante;
-	      lb2 = l2->lettreSuivante;
-	      lb3 = l3->lettreSuivante;
-	      while (lb0->lettre != lbMot->lettre)
-		{
-		  lb0 = lb0->suivant;
-		  lb1 = lb1->suivant;
-		  lb2 = lb2->suivant;
-		  lb3 = lb3->suivant;
-		}
-	      //lb0->lettre = lbMot->lettre
-	      totalFR *= lb0->proba;
-	      totalEN *= lb1->proba;
-	      totalIT *= lb2->proba;
-	      totalDE *= lb3->proba;
-	      totalMot *= lbMot->proba; 
-	    }
-	  l = l->suivant;
+	  l0 = l0->suivant;
+	  l1 = l1->suivant;
+	  l2 = l2->suivant;
+	  l3 = l3->suivant;
 	}
-	totalFR -= totalMot;
-	totalEN -= totalMot;
-	totalIT -= totalMot;
-	totalDE -= totalMot;
-	return max(totalFR,totalEN,totalIT,totalDE);//ne sert a rien juste pour les warning
+      totalFR = (float)totalFR *(float)((float)l0->proba - (float)l->proba);
+      totalEN = (float)totalEN * (float)((float)l1->proba - (float)l->proba);
+      totalIT = (float)totalIT * (float)((float)l2->proba - (float)l->proba);
+      totalDE = (float)totalDE * (float)((float)l3->proba - (float)l->proba);
+      //l0->lettre = l->lettre
+      lbMot = l->lettreSuivante;
+      while (lbMot != NULL)
+	{
+
+	  lb0 = l0->lettreSuivante;
+	  lb1 = l1->lettreSuivante;
+	  lb2 = l2->lettreSuivante;
+	  lb3 = l3->lettreSuivante;
+	  while (lb0->lettre != lbMot->lettre)
+	    {
+	      lb0 = lb0->suivant;
+	      lb1 = lb1->suivant;
+	      lb2 = lb2->suivant;
+	      lb3 = lb3->suivant;
+	    }
+	  //lb0->lettre = lbMot->lettre
+	      
+	  totalFR = (float)totalFR *(float)((float)lb0->proba - (float)lbMot->proba);
+	  totalEN = (float)totalEN * (float)((float)lb1->proba - (float)lbMot->proba);
+	  totalIT = (float)totalIT * (float)((float)lb2->proba - (float)lbMot->proba);
+	  totalDE = (float)totalDE * (float)((float)lb3->proba - (float)lbMot->proba);
+	  lbMot = lbMot->suivant;
+	}
+      l = l->suivant;
+    }
+  return max(totalFR,totalEN,totalIT,totalDE,totalMot);//ne sert a rien juste pour les warning
 }
 void creationBaseProba(LangueProb *lp, char *namefile , int condition)
 {
@@ -552,35 +562,37 @@ void  insereTrier(ElementLangue **racine, char letter)
     }
 }
 
-void  insereTrierLettre(ElementLangueBis **racine, char letter)
+void  insereTrierLettre(ElementLangue *racine, char letter, char lt)
 {
 
   ElementLangueBis *elemInser = malloc(sizeof(ElementLangue));
   elemInser->lettre = letter;
   elemInser->nbOccur = 1;
-  if (*racine != NULL)
+  ElementLangueBis *elem ;
+  ElementLangueBis *elemPrec;
+  while(racine->lettre != lt)
+    racine = racine->suivant;
+  ElementLangueBis *l = racine->lettreSuivante;
+  if (l== NULL ||   l->lettre > letter)
     {
-      ElementLangueBis *elem = (*racine)->suivant;
-      ElementLangueBis *elemPrec = *racine;
-      if ((*racine)->lettre > letter)
-	{
-	  elemInser->suivant = *racine;
-	  *racine = elemInser;
-	}
-      else
-	{
-	  while(elem != NULL && elem->lettre < letter)
-	    {
-	      elem = elem->suivant;
-	      elemPrec = elemPrec->suivant;
-	    }
-	  elemPrec->suivant = elemInser;
-	  elemInser->suivant = elem;
-	}
-    }else
-    {
-      *racine = elemInser;
+      elemInser->suivant = l;
+      racine ->lettreSuivante = elemInser;
     }
+  else
+    {
+      elem = l->suivant;
+      elemPrec = l;
+      while(elem != NULL && elem->lettre < letter)
+	{
+	  elem = elem->suivant;
+	  elemPrec = elemPrec->suivant;
+	}
+      elemPrec->suivant = elemInser;
+      elemInser->suivant = elem;
+    }
+
+
+
 }
 
 ElementLangue* get_EL_from_word(char*mot, int n)
@@ -589,7 +601,6 @@ ElementLangue* get_EL_from_word(char*mot, int n)
   int i = 0, j = 0;
   ElementLangue *racine = malloc(sizeof(ElementLangue));
   ElementLangue *elem;
- 
 
   while(i < n)
     {
@@ -627,15 +638,14 @@ ElementLangue* get_EL_from_word(char*mot, int n)
 	      elem = elem->suivant;
 	      
 	    }
-	  ElementLangueBis *l = elem->lettreSuivante;
-	  ElementLangueBis *l2 = l;
+	  ElementLangueBis *l2 = elem->lettreSuivante;
 	  while(l2 != NULL && l2->lettre < mot[i])
 	    {
 	      l2 = l2->suivant;
 	    }
 	  if(l2 == NULL || mot[i] > l2->lettre)
 	    {
-	      insereTrierLettre(&l, mot[i]);
+	      insereTrierLettre(racine, mot[i],mot[i-1]);
 	    }
 	  else
 	    {
@@ -644,12 +654,13 @@ ElementLangue* get_EL_from_word(char*mot, int n)
 	}
       i++;
     }
-  calculProbaInternal(racine);
+  calculProbaInternal(racine, n);
   return racine;
 }
 
 Langue searchLangue(char *mot,LangueProb *lp, int n)
 {
   ElementLangue *racine = get_EL_from_word(mot,n); 
+  
   return comparProba(racine,lp);
 }

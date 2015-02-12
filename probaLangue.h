@@ -29,10 +29,11 @@ struct ElementLangueBis
 typedef struct ElementLangue ElementLangue;
 struct ElementLangue
 {
-    char lettre;
-    int nbOccur;
-    ElementLangueBis *lettreSuivante;
-    ElementLangue *suivant;
+  char lettre;
+  int nbOccur;
+  float proba;
+  ElementLangueBis *lettreSuivante;
+  ElementLangue *suivant;
 };
 
 
